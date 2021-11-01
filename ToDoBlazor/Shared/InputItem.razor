@@ -1,14 +1,28 @@
 ﻿<div class="border-bottom bg-white">
-    <form id="todoForm" class="py-4 container">
+    <form class="py-4 container">
         <div class="input-group input-group-lg">
-            <input type="text" class="form-control" id="todoInput" placeholder="Add todo..." autofocus>
+            <input type="text" @bind="@Text" class="form-control" placeholder="Add todo..." autofocus>
             <div class="input-group-append">
-                <button id="addItemBtn" class="btn btn-info">ADD</button>
+                <button @onclick="OnAdd" @onclick:preventDefault="true" id="addItemBtn" class="btn btn-info">ADD</button>
             </div>
         </div>
     </form>
 </div>
 
 @code {
+
+    public string  Text { get; set; }
+
+    [Parameter]
+    public EventCallback<string> Add { get; set; }
+
+    public async Task OnAdd()
+    {
+        if (Add.HasDelegate)
+        {
+            await Add.InvokeAsync(Text);
+        }
+        Text = default;
+    }
 
 }

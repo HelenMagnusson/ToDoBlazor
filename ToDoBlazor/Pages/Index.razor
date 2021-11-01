@@ -1,7 +1,7 @@
 ﻿@page "/"
 
 
-<InputItem />
+<InputItem Add="AddItem" />
 
 <Todos TodoItems="@items"/>
 
@@ -11,7 +11,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-       items = await httpClient.GetFromJsonAsync<TodoItems>("https://lexiconapitodo.azurewebsites.net/api/todo");
+        items = await httpClient.GetFromJsonAsync<TodoItems>("https://lexiconapitodo.azurewebsites.net/api/todo");
+    }
+
+    private void AddItem(string text)
+    {
+        if (!string.IsNullOrWhiteSpace(text))
+            items.Items.Add(new Item { Text = text });
     }
 
 }

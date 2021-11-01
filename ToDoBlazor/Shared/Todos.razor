@@ -2,8 +2,7 @@
     <ul id="toDoItems" class="list-group align-self-sm-stretch mt-4">
         @foreach (var item in TodoItems.Items)
         {
-        <li id="input" class="list-group-item d-flex justify-content-between align-items-center mb-2">@item.Text<button class="btn btn-danger"><i class="fa fa-remove"></i></button></li>
-
+            <li @onclick="() => ItemCompleted(item)" class="list-group-item d-flex justify-content-between align-items-center mb-2 @(item.Completed ? "change" : "")">@item.Text<button @onclick="() => Remove(item)" class="btn btn-danger"><i class="fa fa-remove"></i></button></li>
         }
     </ul>
 </div>
@@ -11,6 +10,18 @@
 @code {
 
     [Parameter]
-    public TodoItems TodoItems { get; set; } 
+    public TodoItems TodoItems { get; set; }
+
+    private void ItemCompleted(Item item)
+    {
+        //Todo call backend
+        item.Completed = item.Completed ? false : true;
+    }
+
+    private void Remove(Item item)
+    {
+        //ToDo remove from backend
+        TodoItems.Items.Remove(item);
+    }
 
 }

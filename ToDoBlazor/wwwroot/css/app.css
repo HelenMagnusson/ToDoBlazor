@@ -52,3 +52,12 @@ a, .btn-link {
 .fz-2 {
     font-size: 2rem;
 }
+
+.change {
+    text-decoration: line-through;
+    background-color: #abe2eb;
+}
+
+button {
+    float: right;
+}
