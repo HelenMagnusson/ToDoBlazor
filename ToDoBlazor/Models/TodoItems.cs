@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace ToDoBlazor.Models
 {
 
-    public class ToDoItems
+    public class TodoItems
     {
-        public Item[] Items { get; set; }
+        public List<Item> Items { get; set; } = new List<Item>();
     }
 
 }

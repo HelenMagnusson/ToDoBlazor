@@ -3,9 +3,16 @@
 
 <InputItem />
 
-<Todos />
+<Todos TodoItems="@items"/>
 
 @code{
+
+    private TodoItems items = new TodoItems();
+
+    protected override async Task OnInitializedAsync()
+    {
+       items = await httpClient.GetFromJsonAsync<TodoItems>("https://lexiconapitodo.azurewebsites.net/api/todo");
+    }
 
 }
 
