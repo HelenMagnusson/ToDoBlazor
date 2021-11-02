@@ -12,10 +12,12 @@
     [Parameter]
     public TodoItems TodoItems { get; set; }
 
-    private void ItemCompleted(Item item)
+    private async Task ItemCompleted(Item item)
     {
-        //Todo call backend
+
         item.Completed = item.Completed ? false : true;
+        var response = await httpClient.PutAsJsonAsync<Item>($"api/todo/{item.Id}", item);
+
     }
 
     private void Remove(Item item)

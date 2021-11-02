@@ -11,12 +11,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        items = await httpClient.GetFromJsonAsync<TodoItems>("https://lexiconapitodo.azurewebsites.net/api/todo");
+        items = await httpClient.GetFromJsonAsync<TodoItems>("api/todo");
     }
 
-    private void AddItem(string text)
+    private async Task AddItem(string text)
     {
-        if (!string.IsNullOrWhiteSpace(text))
+        var res = await httpClient.PostAsJsonAsync<CreateItemDTO>("api/todo", new CreateItemDTO { Text = text });
+
+
+
+        if (!string.IsNullOrWhiteSpace(text) && res.IsSuccessStatusCode)
             items.Items.Add(new Item { Text = text });
     }
 
