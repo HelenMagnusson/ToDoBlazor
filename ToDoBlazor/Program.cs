@@ -17,7 +17,7 @@ namespace ToDoBlazor
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://todofuncapi.azurewebsites.net/") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://aaaaaabbbbcccc.azurewebsites.net/") });
 
             await builder.Build().RunAsync();
         }
