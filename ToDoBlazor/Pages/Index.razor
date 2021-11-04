@@ -3,7 +3,7 @@
 
 <InputItem Add="AddItem" />
 
-<Todos TodoItems="@items"/>
+<Todos TodoItems="@items" />
 
 @code{
 
@@ -16,14 +16,28 @@
 
     private async Task AddItem(string text)
     {
-        var res = await httpClient.PostAsJsonAsync<CreateItemDTO>("api/todo", new CreateItemDTO { Text = text });
+        var response = await httpClient.PostAsJsonAsync<CreateItemDTO>("api/todo", new CreateItemDTO { Text = text });
 
+        if (!string.IsNullOrWhiteSpace(text) && response.IsSuccessStatusCode)
+        {
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            {
+               // response.EnsureSuccessStatusCode();
 
-
-        if (!string.IsNullOrWhiteSpace(text) && res.IsSuccessStatusCode)
-            items.Items.Add(new Item { Text = text });
+                using (var streamReader = new System.IO.StreamReader(stream))
+                {
+                    using (var jsonReader = new JsonTextReader(streamReader))
+                    {
+                        var serializer = new Newtonsoft.Json.JsonSerializer();
+                        var item = serializer.Deserialize<Item>(jsonReader);
+                        items.Items.Add(item);
+                    }
+                }
+            }
+        }
     }
 
 }
+
 
 

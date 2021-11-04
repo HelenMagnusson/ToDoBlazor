@@ -2,7 +2,7 @@
     <ul id="toDoItems" class="list-group align-self-sm-stretch mt-4">
         @foreach (var item in TodoItems.Items)
         {
-            <li @onclick="() => ItemCompleted(item)" class="list-group-item d-flex justify-content-between align-items-center mb-2 @(item.Completed ? "change" : "")">@item.Text<button @onclick="() => Remove(item)" class="btn btn-danger"><i class="fa fa-remove"></i></button></li>
+            <li @onclick="() => ItemCompleted(item)" class="list-group-item d-flex justify-content-between align-items-center mb-2 @(item.Completed ? "change" : "")">@item.Text<button @onclick="() => Remove(item)" @onclick:stopPropagation=true class="btn btn-danger"><i class="fa fa-remove"></i></button></li>
         }
     </ul>
 </div>
@@ -18,12 +18,21 @@
         item.Completed = item.Completed ? false : true;
         var response = await httpClient.PutAsJsonAsync<Item>($"api/todo/{item.Id}", item);
 
+        if (!response.IsSuccessStatusCode)
+        {
+            item.Completed = item.Completed ? false : true;
+        }
+
     }
 
-    private void Remove(Item item)
+    private async Task Remove(Item item)
     {
-        //ToDo remove from backend
-        TodoItems.Items.Remove(item);
+        var result = await httpClient.DeleteAsync($"api/todo/{item.Id}");
+
+        if (result.IsSuccessStatusCode)
+        {
+            TodoItems.Items.Remove(item);
+        }
     }
 
 }
